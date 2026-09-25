@@ -8,6 +8,17 @@ export const metadata: Metadata = {
   title: 'TurfBook — Sports Turf Booking & Management Platform',
   description:
     'Book sports turfs in real-time for Football, Cricket, Badminton, Box Cricket, and Pickleball. Complete operating system for turf owners.',
+  manifest: '/manifest.json',
+  themeColor: '#059669',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'TurfBook',
+  },
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

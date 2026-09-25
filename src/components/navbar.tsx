@@ -15,6 +15,7 @@ import {
   Shield,
   CircleDot,
 } from 'lucide-react';
+import InstallPWAButton from './install-pwa-button';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -89,6 +90,8 @@ export default function Navbar() {
 
           {/* Right Actions & Portal Quicklinks */}
           <div className="hidden md:flex items-center space-x-3">
+            <InstallPWAButton />
+
             <Link
               href="/owner"
               className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800/60 hover:bg-emerald-900/60 transition-colors"
@@ -107,21 +110,25 @@ export default function Navbar() {
 
             <div className="h-6 w-px bg-slate-800 mx-1" />
 
-            <div className="flex items-center gap-2 pl-1">
+            <Link
+              href="/auth"
+              className="flex items-center gap-2 pl-1 bg-slate-800/60 hover:bg-slate-800 px-2.5 py-1 rounded-xl border border-slate-700/80 transition-colors"
+            >
               <img
                 src={user.avatar}
                 alt={user.name}
-                className="w-8 h-8 rounded-full border border-emerald-500/50 object-cover"
+                className="w-7 h-7 rounded-full border border-emerald-500/50 object-cover"
               />
               <div className="text-left hidden lg:block">
                 <p className="text-xs font-medium text-white leading-tight">{user.name}</p>
-                <span className="text-[10px] text-emerald-400 font-normal">{user.phone}</span>
+                <span className="text-[10px] text-emerald-400 font-normal">Switch / Login</span>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
           <div className="flex md:hidden items-center gap-2">
+            <InstallPWAButton />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"

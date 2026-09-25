@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="turfGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#064e3b" />
+    </linearGradient>
+    <linearGradient id="ballGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+  </defs>
+  <!-- Background rounded rect -->
+  <rect width="512" height="512" rx="128" fill="url(#turfGrad)" />
+  <!-- Pitch lines -->
+  <rect x="56" y="56" width="400" height="400" rx="32" fill="none" stroke="#a7f3d0" stroke-width="12" stroke-opacity="0.4" />
+  <line x1="56" y1="256" x2="456" y2="256" stroke="#a7f3d0" stroke-width="12" stroke-opacity="0.4" />
+  <circle cx="256" cy="256" r="64" fill="none" stroke="#a7f3d0" stroke-width="12" stroke-opacity="0.4" />
+  <!-- Sports Ball / Emblem in center -->
+  <circle cx="256" cy="256" r="54" fill="#ffffff" />
+  <polygon points="256,220 286,242 274,276 238,276 226,242" fill="#0f172a" />
+</svg>
