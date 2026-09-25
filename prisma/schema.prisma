@@ -1,0 +1,228 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  phone         String?
+  role          String    @default("CUSTOMER") // "CUSTOMER" | "OWNER" | "ADMIN"
+  avatar        String?
+  createdAt     DateTime  @default(now())
+
+  turfsOwned    Turf[]    @relation("OwnerTurfs")
+  bookings      Booking[]
+  reviews       Review[]
+  complaints    Complaint[]
+}
+
+model Turf {
+  id            String    @id @default(uuid())
+  ownerId       String
+  owner         User      @relation("OwnerTurfs", fields: [ownerId], references: [id])
+  name          String
+  slug          String    @unique
+  description   String
+  address       String
+  city          String
+  area          String
+  latitude      Float?
+  longitude     Float?
+  images        String    // JSON string of image URLs
+  amenities     String    // JSON string array of amenities
+  isApproved    Boolean   @default(false)
+  openTime      String    @default("06:00")
+  closeTime     String    @default("23:00")
+  createdAt     DateTime  @default(now())
+
+  grounds       Ground[]
+  coupons       Coupon[]
+  addOns        AddOn[]
+  events        Event[]
+  reviews       Review[]
+  complaints    Complaint[]
+  pricingRules  PricingRule[]
+}
+
+model Ground {
+  id            String      @id @default(uuid())
+  turfId        String
+  turf          Turf        @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  name          String      // e.g. "Pitch 1 (7v7)", "Box Cricket 1", "Badminton Court A"
+  sport         String      // "FOOTBALL", "CRICKET", "BOX_CRICKET", "BADMINTON", "PICKLEBALL", "TENNIS"
+  surfaceType   String      // e.g. "FIFA 2-Star Artificial Turf", "Polyurethane Wooden", "Clay"
+  size          String      // e.g. "120x80 ft", "60x40 ft"
+  indoorOutdoor String      @default("Outdoor") // "Indoor" | "Outdoor"
+  basePrice     Float       // Base hourly rate in INR
+  createdAt     DateTime    @default(now())
+
+  timeSlots     TimeSlot[]
+  bookings      Booking[]
+  pricingRules  PricingRule[]
+}
+
+model PricingRule {
+  id          String    @id @default(uuid())
+  turfId      String
+  turf        Turf      @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  groundId    String?
+  ground      Ground?   @relation(fields: [groundId], references: [id], onDelete: Cascade)
+  name        String    // e.g. "Morning Saver", "Peak Evening", "Weekend Rush"
+  dayOfWeek   String    // "ALL", "WEEKDAY", "WEEKEND", "SAT", "SUN"
+  startTime   String    // "17:00"
+  endTime     String    // "23:00"
+  priceMultiplier Float @default(1.0)
+  fixedPrice  Float?
+}
+
+model TimeSlot {
+  id          String      @id @default(uuid())
+  groundId    String
+  ground      Ground      @relation(fields: [groundId], references: [id], onDelete: Cascade)
+  date        String      // "YYYY-MM-DD"
+  startTime   String      // "06:00"
+  endTime     String      // "07:00"
+  price       Float
+  status      String      @default("AVAILABLE") // "AVAILABLE" | "BOOKED" | "BLOCKED" | "MAINTENANCE"
+  version     Int         @default(1)
+  bookingId   String?
+  booking     Booking?    @relation(fields: [bookingId], references: [id])
+
+  @@unique([groundId, date, startTime])
+  @@index([date, status])
+}
+
+model Booking {
+  id                  String        @id @default(uuid())
+  bookingCode         String        @unique // e.g. "TB-938271"
+  customerId          String
+  customer            User          @relation(fields: [customerId], references: [id])
+  turfId              String
+  groundId            String
+  ground              Ground        @relation(fields: [groundId], references: [id])
+  date                String        // "YYYY-MM-DD"
+  startTime           String        // "19:00"
+  endTime             String        // "21:00"
+  durationHours       Int           @default(1)
+  numberOfPlayers     Int           @default(10)
+  totalAmount         Float
+  advanceAmount       Float         @default(0)
+  remainingAmount     Float         @default(0)
+  paymentStatus       String        @default("PAID") // "PAID" | "ADVANCE_PAID" | "PENDING_AT_VENUE" | "REFUNDED"
+  paymentMethod       String        @default("UPI")  // "UPI" | "CARD" | "CASH"
+  status              String        @default("CONFIRMED") // "CONFIRMED" | "CANCELLED" | "CHECKED_IN" | "COMPLETED"
+  qrCodeData          String
+  checkInTime         DateTime?
+  cancellationReason  String?
+  refundAmount        Float?
+  isManualBooking     Boolean       @default(false)
+  manualCustomerName  String?
+  manualCustomerPhone String?
+  createdAt           DateTime      @default(now())
+
+  timeSlots           TimeSlot[]
+  bookingAddOns       BookingAddOn[]
+}
+
+model AddOn {
+  id          String         @id @default(uuid())
+  turfId      String
+  turf        Turf           @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  name        String         // e.g. "Football Rental", "Jersey Bibs Set", "Referee", "HD Video Recording", "Water Crates"
+  price       Float
+  icon        String?
+  description String?
+  isAvailable Boolean        @default(true)
+  
+  bookingAddOns BookingAddOn[]
+}
+
+model BookingAddOn {
+  id          String   @id @default(uuid())
+  bookingId   String
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  addOnId     String
+  addOn       AddOn    @relation(fields: [addOnId], references: [id])
+  quantity    Int      @default(1)
+  price       Float
+}
+
+model Coupon {
+  id              String    @id @default(uuid())
+  turfId          String?
+  turf            Turf?     @relation(fields: [turfId], references: [id])
+  code            String    @unique
+  discountPercent Float?
+  discountAmount  Float?
+  minAmount       Float     @default(0)
+  maxDiscount     Float?
+  validUntil      DateTime
+  isActive        Boolean   @default(true)
+}
+
+model Event {
+  id              String              @id @default(uuid())
+  turfId          String
+  turf            Turf                @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  title           String              // e.g. "Elite Football Cup 2026"
+  sport           String              // "FOOTBALL", "CRICKET", etc.
+  bannerImage     String?
+  description     String
+  eventDate       String              // "YYYY-MM-DD"
+  startTime       String
+  endTime         String
+  entryFee        Float
+  prizePool       Float
+  maxTeams        Int
+  rules           String
+  status          String              @default("UPCOMING") // "UPCOMING" | "ONGOING" | "COMPLETED"
+  createdAt       DateTime            @default(now())
+
+  registrations   EventRegistration[]
+}
+
+model EventRegistration {
+  id            String    @id @default(uuid())
+  eventId       String
+  event         Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  teamName      String
+  captainName   String
+  captainPhone  String
+  captainEmail  String
+  playersCount  Int
+  paymentStatus String    @default("PAID")
+  createdAt     DateTime  @default(now())
+}
+
+model Review {
+  id          String    @id @default(uuid())
+  turfId      String
+  turf        Turf      @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  customerId  String
+  customer    User      @relation(fields: [customerId], references: [id])
+  rating      Int       // 1 to 5
+  comment     String
+  ownerReply  String?
+  createdAt   DateTime  @default(now())
+}
+
+model Complaint {
+  id              String    @id @default(uuid())
+  ticketNumber    String    @unique
+  turfId          String
+  turf            Turf      @relation(fields: [turfId], references: [id])
+  customerId      String
+  customer        User      @relation(fields: [customerId], references: [id])
+  bookingCode     String?
+  subject         String
+  description     String
+  status          String    @default("OPEN") // "OPEN" | "INVESTIGATING" | "RESOLVED"
+  adminResolution String?
+  createdAt       DateTime  @default(now())
+}
