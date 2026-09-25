@@ -2,250 +2,1500 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>TurfBook — Sports Turf Booking</title>
   <style>
+    :root {
+      --bg-primary: #090d16;
+      --bg-card: #121a2d;
+      --bg-card-hover: #18223a;
+      --bg-surface: #1e293b;
+      --accent-green: #10b981;
+      --accent-green-hover: #059669;
+      --accent-glow: rgba(16, 185, 129, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-color: #1e293b;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --nav-height: 64px;
+      --header-height: 60px;
+    }
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
     body {
-      background: #090d16;
-      color: #f1f5f9;
+      background: var(--bg-primary);
+      color: var(--text-main);
       min-height: 100vh;
+      overflow-x: hidden;
+      padding-top: var(--header-height);
+      padding-bottom: calc(var(--nav-height) + 20px);
+      user-select: none;
+    }
+
+    /* TOP HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-height);
+      background: rgba(9, 13, 22, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 100;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 10px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
-      text-align: center;
+      font-size: 20px;
+      box-shadow: 0 4px 12px var(--accent-glow);
     }
-    .logo-container {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    .brand-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .brand-name span { color: var(--accent-green); }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .location-btn {
+      background: #18223a;
+      border: 1px solid #233152;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
       border-radius: 20px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 38px;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.35);
-      margin-bottom: 20px;
-      animation: pulse 2s infinite ease-in-out;
+      gap: 4px;
+      cursor: pointer;
     }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
-    }
-    h1 span {
-      color: #10b981;
-    }
-    p.subtitle {
-      color: #94a3b8;
-      font-size: 14px;
-      max-width: 320px;
-      line-height: 1.5;
-      margin-bottom: 28px;
-    }
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #f87171;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 24px;
-    }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      background: #ef4444;
-      border-radius: 50%;
-    }
-    .card {
-      background: #131c2e;
-      border: 1px solid #1e293b;
-      border-radius: 16px;
-      padding: 20px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-      margin-bottom: 20px;
-      text-align: left;
-    }
-    .card label {
-      display: block;
+    .location-btn span.city { color: var(--text-main); font-weight: 700; }
+    .user-pill {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent-green);
       font-size: 12px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #94a3b8;
-      margin-bottom: 8px;
-    }
-    .input-group {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    input[type="url"] {
-      flex: 1;
-      background: #0b1120;
-      border: 1px solid #334155;
-      color: #fff;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    input[type="url"]:focus {
-      border-color: #10b981;
-    }
-    .btn {
-      background: #10b981;
-      color: #042f2e;
-      border: none;
-      font-weight: 700;
-      font-size: 14px;
-      padding: 12px 20px;
-      border-radius: 10px;
+      padding: 6px 12px;
+      border-radius: 20px;
       cursor: pointer;
+    }
+
+    /* BOTTOM NAV BAR */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border-color);
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-      transition: all 0.2s;
+      justify-content: space-around;
+      z-index: 100;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
-    .btn:hover {
-      background: #34d399;
-    }
-    .btn-secondary {
-      background: #1e293b;
-      color: #e2e8f0;
-      margin-top: 10px;
-    }
-    .btn-secondary:hover {
-      background: #334155;
-    }
-    .quick-links {
+    .nav-item {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .quick-link-btn {
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      color: #94a3b8;
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      text-align: left;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      background: none;
+      border: none;
       cursor: pointer;
+      flex: 1;
+      padding: 8px 0;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .nav-item.active {
+      color: var(--accent-green);
+    }
+    .nav-item .icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .nav-badge {
+      position: absolute;
+      top: 4px;
+      right: calc(50% - 16px);
+      background: var(--accent-green);
+      color: #064e3b;
+      font-size: 9px;
+      font-weight: 800;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* TAB SCREENS */
+    .tab-screen {
+      display: none;
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    .tab-screen.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* HERO BANNER */
+    .hero-banner {
+      background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::after {
+      content: '⚽';
+      position: absolute;
+      right: 12px;
+      bottom: -10px;
+      font-size: 80px;
+      opacity: 0.15;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hero-title {
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .hero-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+    }
+    .hero-promo {
+      font-size: 11px;
+      color: #a7f3d0;
+      background: rgba(0,0,0,0.3);
+      padding: 4px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    /* SPORT PILLS */
+    .sport-filter {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .sport-filter::-webkit-scrollbar { display: none; }
+    .sport-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .sport-chip.active {
+      background: var(--accent-green);
+      color: #042f2e;
+      border-color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    /* TURF CARDS */
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-title span.count {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .turf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .turf-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .turf-card:active {
+      transform: scale(0.98);
+      border-color: var(--accent-green);
+    }
+    .turf-card-image {
+      height: 140px;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+    }
+    .turf-badge-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .quick-link-btn:hover {
-      border-color: #10b981;
-      color: #f1f5f9;
-    }
-    .quick-link-btn span.badge {
-      background: #1e293b;
-      color: #10b981;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: 700;
-    }
-    .info-box {
+    .rating-badge {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      color: #fbbf24;
       font-size: 12px;
-      color: #64748b;
-      line-height: 1.5;
-      margin-top: 16px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .sport-tag {
+      background: var(--accent-green);
+      color: #042f2e;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+    .turf-card-body {
+      padding: 14px;
+    }
+    .turf-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .turf-location {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .amenities-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .amenity-chip {
+      background: #18223a;
+      color: #cbd5e1;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .turf-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-color);
+      padding-top: 10px;
+      margin-top: 4px;
+    }
+    .price-tag {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+    .price-tag span {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .book-btn {
+      background: var(--accent-green);
+      color: #042f2e;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* SLOT PICKER SCREEN */
+    .turf-header-summary {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .summary-thumb {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+    }
+    .pitch-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .pitch-btn {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
       text-align: center;
     }
+    .pitch-btn.active {
+      background: #18223a;
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+    .date-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
+    }
+    .date-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: 12px;
+      min-width: 80px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .date-card.active {
+      background: var(--accent-green);
+      color: #042f2e;
+      border-color: var(--accent-green);
+    }
+    .date-day { font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .date-num { font-size: 16px; font-weight: 800; margin: 2px 0; }
+    .slot-grid-container {
+      margin-bottom: 20px;
+    }
+    .slot-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin: 12px 0 8px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .slot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .slot-chip {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 10px 6px;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .slot-chip.available {
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .slot-chip.selected {
+      background: var(--accent-green);
+      color: #042f2e;
+      border-color: var(--accent-green);
+      box-shadow: 0 4px 12px var(--accent-glow);
+    }
+    .slot-chip.booked {
+      background: #111827;
+      border-color: #1f2937;
+      color: #4b5563;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .slot-time { font-size: 12px; font-weight: 700; }
+    .slot-rate { font-size: 10px; opacity: 0.8; margin-top: 2px; }
+
+    /* ADD-ONS */
+    .addon-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .addon-info { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+    .addon-price { font-size: 12px; color: var(--accent-green); font-weight: 700; }
+    .addon-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent-green);
+      cursor: pointer;
+    }
+
+    /* SUMMARY BAR */
+    .booking-summary-bar {
+      position: fixed;
+      bottom: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: #0f172a;
+      border-top: 1px solid var(--border-color);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 90;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .summary-total {
+      display: flex;
+      flex-direction: column;
+    }
+    .summary-total span.label { font-size: 11px; color: var(--text-muted); }
+    .summary-total span.amount { font-size: 20px; font-weight: 800; color: var(--accent-green); }
+    .proceed-btn {
+      background: var(--accent-green);
+      color: #042f2e;
+      border: none;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* TICKET DISPLAY (BookMyShow Style) */
+    .ticket-container {
+      background: linear-gradient(180deg, #18223a 0%, #111827 100%);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .ticket-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    .ticket-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .ticket-venue {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .ticket-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+    .ticket-cell label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .ticket-cell span {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .qr-box {
+      background: #ffffff;
+      padding: 14px;
+      border-radius: 16px;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 14px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ticket-code {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-green);
+      margin-bottom: 14px;
+    }
+    .ticket-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .ticket-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+    .ticket-btn-primary { background: var(--accent-green); color: #042f2e; }
+    .ticket-btn-danger { background: #2a1b1e; color: #f87171; border: 1px solid #451a1a; }
+
+    /* OWNER HUB */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .stat-num { font-size: 18px; font-weight: 800; color: var(--accent-green); margin-bottom: 2px; }
+    .stat-label { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-content {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      width: 100%;
+      max-width: 600px;
+      padding: 24px 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .modal-title { font-size: 18px; font-weight: 800; }
+    .close-btn {
+      background: #1e293b;
+      border: none;
+      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .pay-option {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .pay-option.selected {
+      border-color: var(--accent-green);
+      background: #14233c;
+    }
+    .pay-option-left { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 14px; }
   </style>
 </head>
 <body>
-  <div class="logo-container">⚽</div>
-  <h1>Turf<span>Book</span></h1>
-  <p class="subtitle">Book sports turfs, manage venues, and join tournaments.</p>
 
-  <div class="status-badge" id="statusBadge">
-    <div class="status-dot"></div>
-    <span id="statusText">Server not reached</span>
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚽</div>
+      <div class="brand-name">Turf<span>Book</span></div>
+    </div>
+    <div class="header-actions">
+      <div class="location-btn" onclick="switchLocation()">
+        <span>📍</span>
+        <span class="city" id="currentCity">Mumbai</span>
+        <span>▾</span>
+      </div>
+      <div class="user-pill" id="userRolePill" onclick="openAuthModal()">
+        👤 Player
+      </div>
+    </div>
+  </header>
+
+  <!-- TAB 1: EXPLORE TURFS -->
+  <div class="tab-screen active" id="tab-explore">
+    <div class="hero-banner">
+      <div class="hero-badge">⚡ Instant Booking</div>
+      <div class="hero-title">Play Football, Cricket & Badminton</div>
+      <div class="hero-desc">Verified turf pitches with floodlights & real-time slot booking.</div>
+      <div class="hero-promo">Use code <b>FIRST50</b> for ₹150 OFF</div>
+    </div>
+
+    <!-- Sport Filters -->
+    <div class="sport-filter">
+      <button class="sport-chip active" onclick="filterSport('All', this)">🏆 All Sports</button>
+      <button class="sport-chip" onclick="filterSport('Football', this)">⚽ Football</button>
+      <button class="sport-chip" onclick="filterSport('Box Cricket', this)">🏏 Box Cricket</button>
+      <button class="sport-chip" onclick="filterSport('Badminton', this)">🏸 Badminton</button>
+      <button class="sport-chip" onclick="filterSport('Tennis', this)">🎾 Tennis</button>
+    </div>
+
+    <div class="section-title">
+      <span>Featured Turfs</span>
+      <span class="count" id="turfCount">4 Grounds Available</span>
+    </div>
+
+    <!-- Turf List -->
+    <div class="turf-list" id="turfListContainer">
+      <!-- Generated via JS -->
+    </div>
   </div>
 
-  <div class="card">
-    <label for="serverUrlInput">Connect To Server</label>
-    <div class="input-group">
-      <input type="url" id="serverUrlInput" placeholder="https://..." value="">
+  <!-- TAB 2: SLOT PICKER -->
+  <div class="tab-screen" id="tab-booking">
+    <div class="turf-header-summary" id="bookingTurfSummary">
+      <!-- Generated via JS -->
     </div>
-    <button class="btn" id="connectBtn" onclick="connectToServer()">Connect to TurfBook</button>
 
-    <div class="quick-links">
-      <button class="quick-link-btn" onclick="useQuickUrl('http://192.168.1.101:3000')">
-        <span>🏠 Local PC (Same Wi-Fi)</span>
-        <span class="badge">192.168.1.101:3000</span>
+    <div class="section-title">Select Court / Pitch</div>
+    <div class="pitch-selector" id="pitchSelector">
+      <!-- Generated via JS -->
+    </div>
+
+    <div class="section-title">Select Date</div>
+    <div class="date-row" id="datePickerRow">
+      <!-- Generated via JS -->
+    </div>
+
+    <div class="slot-grid-container">
+      <div class="slot-section-title">🌅 Morning (06:00 AM - 12:00 PM)</div>
+      <div class="slot-grid" id="morningSlots"></div>
+
+      <div class="slot-section-title">☀️ Afternoon (12:00 PM - 05:00 PM)</div>
+      <div class="slot-grid" id="afternoonSlots"></div>
+
+      <div class="slot-section-title">🌙 Evening & Night (05:00 PM - 11:00 PM)</div>
+      <div class="slot-grid" id="eveningSlots"></div>
+    </div>
+
+    <div class="section-title">Add-on Equipment</div>
+    <div id="addonsContainer">
+      <div class="addon-item">
+        <div class="addon-info"><span>⚽</span> Match Ball (FIFA Quality)</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="addon-price">+₹100</span>
+          <input type="checkbox" class="addon-checkbox" id="addon-ball" onchange="updateTotal()">
+        </div>
+      </div>
+      <div class="addon-item">
+        <div class="addon-info"><span>🎽</span> Team Bibs Set (10 pcs)</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="addon-price">+₹150</span>
+          <input type="checkbox" class="addon-checkbox" id="addon-bibs" onchange="updateTotal()">
+        </div>
+      </div>
+      <div class="addon-item">
+        <div class="addon-info"><span>👨‍⚖️</span> Certified Referee</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="addon-price">+₹400</span>
+          <input type="checkbox" class="addon-checkbox" id="addon-ref" onchange="updateTotal()">
+        </div>
+      </div>
+      <div class="addon-item">
+        <div class="addon-info"><span>🥤</span> Hydration Pack (10 Energy Drinks)</div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="addon-price">+₹80</span>
+          <input type="checkbox" class="addon-checkbox" id="addon-drinks" onchange="updateTotal()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Persistent Bottom Pay Bar -->
+    <div class="booking-summary-bar">
+      <div class="summary-total">
+        <span class="label" id="summarySlotText">No slot selected</span>
+        <span class="amount" id="summaryTotalText">₹0</span>
+      </div>
+      <button class="proceed-btn" id="proceedPayBtn" onclick="openCheckoutModal()">
+        Proceed to Book ➔
       </button>
     </div>
   </div>
 
-  <div class="info-box">
-    💡 Make sure your TurfBook server is running with <code>npm run dev</code> on your computer, or provide a deployed cloud/tunnel URL to share with friends.
+  <!-- TAB 3: MY PASSES -->
+  <div class="tab-screen" id="tab-passes">
+    <div class="section-title">
+      <span>My Digital Passes</span>
+      <span class="count" id="passCount">Active Passes</span>
+    </div>
+    <div id="passesContainer">
+      <!-- Tickets loaded here -->
+    </div>
   </div>
 
+  <!-- TAB 4: OWNER HUB -->
+  <div class="tab-screen" id="tab-owner">
+    <div class="section-title">
+      <span>Turf Owner Dashboard</span>
+      <span class="hero-badge" style="margin:0;">Live Control</span>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="ownerRevenue">₹18,400</div>
+        <div class="stat-label">Today's Sales</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="ownerBookings">14</div>
+        <div class="stat-label">Booked Slots</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="ownerOccupancy">78%</div>
+        <div class="stat-label">Occupancy</div>
+      </div>
+    </div>
+
+    <div class="hero-banner" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+      <div class="hero-badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">⚡ Slot Manager</div>
+      <div class="hero-title" style="font-size: 15px;">Block or Release Ground Slots</div>
+      <div class="hero-desc">Tap any slot below to toggle maintenance block for today.</div>
+      <div class="slot-grid" id="ownerSlotGrid" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="section-title" style="margin-top: 20px;">Gate Pass QR Verifier</div>
+    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Enter booking code to verify player check-in:</div>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="verifyCodeInput" placeholder="e.g. TB-8921" style="flex:1; background:#0b1120; border:1px solid #334155; color:#fff; padding:10px; border-radius:8px; font-weight:700; text-transform:uppercase;">
+        <button class="book-btn" onclick="verifyTicketCode()">Verify</button>
+      </div>
+      <div id="verifyResult" style="margin-top:10px; font-size:13px; font-weight:700;"></div>
+    </div>
+  </div>
+
+  <!-- TAB 5: PROFILE & SETTINGS -->
+  <div class="tab-screen" id="tab-profile">
+    <div style="text-align: center; padding: 20px 0;">
+      <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; margin: 0 auto 12px auto; display:flex; align-items:center; justify-content:center; font-size:32px;">
+        👤
+      </div>
+      <h2 id="profileName" style="font-size: 20px; font-weight: 800;">Rahul Sharma</h2>
+      <p id="profileRole" style="font-size: 12px; color: var(--accent-green); font-weight: 700; margin-top: 2px;">Player Account (Verified)</p>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">+91 98765 43210 • rahul@turfbook.com</p>
+    </div>
+
+    <div class="section-title">Fast Role Switch</div>
+    <div style="display:flex; gap:10px; margin-bottom: 20px;">
+      <button class="pitch-btn active" id="roleBtnPlayer" onclick="setRole('Player')">⚽ Player View</button>
+      <button class="pitch-btn" id="roleBtnOwner" onclick="setRole('Owner')">💼 Turf Owner View</button>
+    </div>
+
+    <div class="section-title">Player Perks</div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num">450</div>
+        <div class="stat-label">Turf Coins</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Matches</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4.9★</div>
+        <div class="stat-label">FairPlay</div>
+      </div>
+    </div>
+
+    <div class="section-title">Support & Info</div>
+    <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; overflow:hidden;">
+      <div style="padding:14px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; cursor:pointer;" onclick="alert('WhatsApp Support: +91 90000 12345 (24x7 Support)')">
+        <span>💬 24x7 TurfBook Support</span>
+        <span style="color:var(--text-muted);">›</span>
+      </div>
+      <div style="padding:14px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; cursor:pointer;" onclick="alert('TurfBook Version 1.2.0 (Native Android Build)')">
+        <span>📱 App Version</span>
+        <span style="color:var(--accent-green); font-weight:700;">v1.2.0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Confirm Booking</div>
+        <button class="close-btn" onclick="closeCheckoutModal()">✕</button>
+      </div>
+
+      <div style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; padding:12px; margin-bottom:16px;">
+        <div id="modalTurfName" style="font-size:15px; font-weight:800; margin-bottom:4px;"></div>
+        <div id="modalSlotTime" style="font-size:13px; color:var(--accent-green); font-weight:700;"></div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase;">Apply Coupon</div>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="couponInput" placeholder="Enter FIRST50" value="FIRST50" style="flex:1; background:#0b1120; border:1px solid #334155; color:#fff; padding:10px; border-radius:8px; font-weight:700; text-transform:uppercase;">
+          <button class="book-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div id="couponMessage" style="font-size:11px; color:#34d399; margin-top:4px;">Coupon 'FIRST50' applied: ₹150 OFF!</div>
+      </div>
+
+      <div style="font-size:12px; font-weight:700; color:var(--text-muted); margin-bottom:8px; text-transform:uppercase;">Select Payment Method</div>
+      <div class="pay-option selected" onclick="selectPayOption(this)">
+        <div class="pay-option-left"><span>⚡</span> UPI / GPay / PhonePe / Paytm</div>
+        <span style="color:var(--accent-green);">●</span>
+      </div>
+      <div class="pay-option" onclick="selectPayOption(this)">
+        <div class="pay-option-left"><span>💳</span> Credit / Debit Card</div>
+        <span style="color:var(--text-muted);">○</span>
+      </div>
+      <div class="pay-option" onclick="selectPayOption(this)">
+        <div class="pay-option-left"><span>💵</span> Pay at Turf (Cash)</div>
+        <span style="color:var(--text-muted);">○</span>
+      </div>
+
+      <div style="border-top:1px solid var(--border-color); padding-top:12px; margin-top:16px; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:6px;">
+          <span>Court Slot Fee</span>
+          <span id="billSlotFee">₹1,200</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-muted); margin-bottom:6px;">
+          <span>Add-ons Fee</span>
+          <span id="billAddonsFee">₹0</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:13px; color:#34d399; margin-bottom:6px;">
+          <span>Discount (FIRST50)</span>
+          <span id="billDiscount">-₹150</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:800; color:#fff; border-top:1px dashed #334155; padding-top:8px;">
+          <span>Grand Total</span>
+          <span id="billGrandTotal" style="color:var(--accent-green);">₹1,050</span>
+        </div>
+      </div>
+
+      <button class="btn" style="width:100%; padding:14px; background:var(--accent-green); color:#042f2e; border:none; border-radius:12px; font-weight:800; font-size:15px; cursor:pointer;" onclick="confirmPaymentAndGeneratePass()">
+        Pay & Confirm Pass ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab('explore', this)">
+      <span class="icon">🏟️</span>
+      <span>Explore</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('booking', this)">
+      <span class="icon">⚡</span>
+      <span>Book Slot</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('passes', this)">
+      <span class="icon">🎟️</span>
+      <span>My Passes</span>
+      <span class="nav-badge" id="navPassBadge">1</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('owner', this)">
+      <span class="icon">💼</span>
+      <span>Owner Hub</span>
+    </button>
+    <button class="nav-item" onclick="switchTab('profile', this)">
+      <span class="icon">👤</span>
+      <span>Profile</span>
+    </button>
+  </nav>
+
   <script>
-    const DEFAULT_SERVER = 'http://192.168.1.101:3000';
-    const storedUrl = localStorage.getItem('turfbook_server_url') || DEFAULT_SERVER;
-    document.getElementById('serverUrlInput').value = storedUrl;
+    // TURF DATA
+    const TURFS = [
+      {
+        id: 'green-field-arena',
+        name: 'Green Field Arena',
+        sport: 'Football',
+        location: 'Bandra West, Mumbai • 1.2 km away',
+        city: 'Mumbai',
+        rate: 1200,
+        rating: '4.8',
+        image: 'https://images.unsplash.com/photo-1529900245534-47fbfb5d836e?auto=format&fit=crop&w=800&q=80',
+        amenities: ['FIFA Turf', 'Floodlights', 'Changing Room', 'Parking'],
+        pitches: ['Pitch A (5v5)', 'Pitch B (7v7)']
+      },
+      {
+        id: 'skyline-turf-lounge',
+        name: 'Skyline Turf & Lounge',
+        sport: 'Box Cricket',
+        location: 'Andheri East, Mumbai • 3.4 km away',
+        city: 'Mumbai',
+        rate: 1000,
+        rating: '4.7',
+        image: 'https://images.unsplash.com/photo-1531415074868-036b1c57e3ce?auto=format&fit=crop&w=800&q=80',
+        amenities: ['Cricket Net', 'Bowling Machine', 'Lounge Cafe', 'Floodlights'],
+        pitches: ['Box Court 1', 'Box Court 2']
+      },
+      {
+        id: 'champion-sports-hub',
+        name: 'Champion Sports Hub',
+        sport: 'Badminton',
+        location: 'Koramangala, Bangalore • 2.1 km away',
+        city: 'Bangalore',
+        rate: 600,
+        rating: '4.9',
+        image: 'https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=80',
+        amenities: ['Wooden Court', 'AC Court', 'Racket Rental', 'Shower'],
+        pitches: ['Court 1 (Badminton)', 'Court 2 (Tennis)']
+      },
+      {
+        id: 'urban-kick-park',
+        name: 'Urban Kick Football Park',
+        sport: 'Football',
+        location: 'Indiranagar, Bangalore • 4.0 km away',
+        city: 'Bangalore',
+        rate: 1400,
+        rating: '4.8',
+        image: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=800&q=80',
+        amenities: ['2-inch Grass', 'Dugouts', 'Live Stream', 'Cafeteria'],
+        pitches: ['Main Field 7v7', 'Training Cage']
+      }
+    ];
 
-    function connectToServer() {
-      const url = document.getElementById('serverUrlInput').value.trim();
-      if (!url) return;
-      localStorage.setItem('turfbook_server_url', url);
-      document.getElementById('statusText').innerText = 'Connecting to ' + url + '...';
-      document.getElementById('statusBadge').style.borderColor = 'rgba(16, 185, 129, 0.4)';
-      document.getElementById('statusBadge').style.color = '#34d399';
-      document.querySelector('.status-dot').style.background = '#10b981';
-      window.location.href = url;
+    // INITIAL STATE
+    let selectedTurf = TURFS[0];
+    let selectedPitch = selectedTurf.pitches[0];
+    let selectedDate = 'Today, 25 Sep';
+    let selectedSlot = null;
+    let discountAmount = 150;
+    let currentRole = localStorage.getItem('turfbook_role') || 'Player';
+
+    // STORED PASSES
+    const DEFAULT_PASSES = [
+      {
+        code: 'TB-78921',
+        turfName: 'Green Field Arena',
+        pitch: 'Pitch A (5v5)',
+        date: 'Today, 25 Sep',
+        time: '07:00 PM - 08:00 PM',
+        amount: '₹1,050',
+        status: 'CONFIRMED'
+      }
+    ];
+    let passes = JSON.parse(localStorage.getItem('turfbook_passes') || JSON.stringify(DEFAULT_PASSES));
+
+    // BOOKED SLOTS STORAGE
+    let bookedSlots = JSON.parse(localStorage.getItem('turfbook_booked_slots') || '{"07:00 PM": true, "09:00 PM": true}');
+
+    // INIT
+    window.onload = function() {
+      renderTurfList(TURFS);
+      renderSlotPicker();
+      renderPasses();
+      renderOwnerHub();
+      setRole(currentRole);
+    };
+
+    // RENDER TURFS
+    function renderTurfList(list) {
+      const container = document.getElementById('turfListContainer');
+      document.getElementById('turfCount').innerText = list.length + ' Grounds Available';
+      container.innerHTML = list.map(t => `
+        <div class="turf-card" onclick="startBooking('${t.id}')">
+          <div class="turf-card-image" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(9,13,22,0.9) 100%), url('${t.image}');">
+            <div class="turf-badge-row">
+              <span class="sport-tag">${t.sport}</span>
+              <span class="rating-badge">★ ${t.rating}</span>
+            </div>
+          </div>
+          <div class="turf-card-body">
+            <div class="turf-name">${t.name}</div>
+            <div class="turf-location">📍 ${t.location}</div>
+            <div class="amenities-row">
+              ${t.amenities.map(a => `<span class="amenity-chip">${a}</span>`).join('')}
+            </div>
+            <div class="turf-footer">
+              <div class="price-tag">₹${t.rate} <span>/ hour</span></div>
+              <button class="book-btn">Book Court ➔</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
-    function useQuickUrl(url) {
-      document.getElementById('serverUrlInput').value = url;
-      connectToServer();
+    function filterSport(sport, btn) {
+      document.querySelectorAll('.sport-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      if (sport === 'All') renderTurfList(TURFS);
+      else renderTurfList(TURFS.filter(t => t.sport.toLowerCase().includes(sport.toLowerCase())));
     }
 
-    // Try auto-connecting if user previously navigated
-    const autoRedirect = sessionStorage.getItem('turfbook_tried_auto');
-    if (!autoRedirect && storedUrl && storedUrl !== 'http://10.0.2.2:3000') {
-      sessionStorage.setItem('turfbook_tried_auto', '1');
-      // Test fetch with short timeout before redirecting to avoid infinite loop
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2000);
-      fetch(storedUrl, { mode: 'no-cors', signal: controller.signal })
-        .then(() => {
-          clearTimeout(timeoutId);
-          window.location.href = storedUrl;
-        })
-        .catch(() => {
-          // Stay on this friendly screen if server is not reachable
-          document.getElementById('statusText').innerText = 'Could not reach ' + storedUrl;
-        });
+    function switchLocation() {
+      const city = document.getElementById('currentCity').innerText === 'Mumbai' ? 'Bangalore' : 'Mumbai';
+      document.getElementById('currentCity').innerText = city;
+      renderTurfList(TURFS.filter(t => t.city === city));
+    }
+
+    // START BOOKING
+    function startBooking(turfId) {
+      selectedTurf = TURFS.find(t => t.id === turfId) || TURFS[0];
+      selectedPitch = selectedTurf.pitches[0];
+      selectedSlot = null;
+      renderSlotPicker();
+      switchTab('booking', document.querySelectorAll('.nav-item')[1]);
+    }
+
+    function renderSlotPicker() {
+      // Summary
+      document.getElementById('bookingTurfSummary').innerHTML = `
+        <div class="summary-thumb" style="background-image: url('${selectedTurf.image}')"></div>
+        <div style="flex:1;">
+          <div style="font-size:15px; font-weight:800;">${selectedTurf.name}</div>
+          <div style="font-size:11px; color:var(--text-muted);">📍 ${selectedTurf.location}</div>
+          <div style="font-size:12px; font-weight:700; color:var(--accent-green); margin-top:2px;">₹${selectedTurf.rate}/hr</div>
+        </div>
+      `;
+
+      // Pitch Selector
+      document.getElementById('pitchSelector').innerHTML = selectedTurf.pitches.map((p, i) => `
+        <button class="pitch-btn ${p === selectedPitch ? 'active' : ''}" onclick="selectPitch('${p}', this)">
+          ${p}
+        </button>
+      `).join('');
+
+      // Dates
+      const dates = ['Today, 25 Sep', 'Tomorrow, 26 Sep', 'Sun, 27 Sep', 'Mon, 28 Sep', 'Tue, 29 Sep'];
+      document.getElementById('datePickerRow').innerHTML = dates.map(d => `
+        <div class="date-card ${d === selectedDate ? 'active' : ''}" onclick="selectDate('${d}', this)">
+          <div class="date-day">${d.split(',')[0]}</div>
+          <div class="date-num">${d.split(' ')[1]}</div>
+          <div style="font-size:9px; opacity:0.8;">Sep</div>
+        </div>
+      `).join('');
+
+      // Slots
+      renderTimeSlots();
+      updateTotal();
+    }
+
+    function selectPitch(pitch, btn) {
+      selectedPitch = pitch;
+      document.querySelectorAll('#pitchSelector .pitch-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function selectDate(date, el) {
+      selectedDate = date;
+      document.querySelectorAll('#datePickerRow .date-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      selectedSlot = null;
+      renderTimeSlots();
+      updateTotal();
+    }
+
+    function renderTimeSlots() {
+      const mornings = ['06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM'];
+      const afternoons = ['12:00 PM', '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM'];
+      const evenings = ['05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM', '10:00 PM'];
+
+      function makeChips(list) {
+        return list.map(s => {
+          const isBooked = bookedSlots[s];
+          const isSelected = selectedSlot === s;
+          const cls = isBooked ? 'booked' : (isSelected ? 'selected' : 'available');
+          return `
+            <div class="slot-chip ${cls}" onclick="${isBooked ? '' : `chooseSlot('${s}')`}">
+              <div class="slot-time">${s}</div>
+              <div class="slot-rate">${isBooked ? 'Booked' : '₹' + selectedTurf.rate}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('morningSlots').innerHTML = makeChips(mornings);
+      document.getElementById('afternoonSlots').innerHTML = makeChips(afternoons);
+      document.getElementById('eveningSlots').innerHTML = makeChips(evenings);
+    }
+
+    function chooseSlot(time) {
+      selectedSlot = time;
+      renderTimeSlots();
+      updateTotal();
+    }
+
+    function updateTotal() {
+      let base = selectedSlot ? selectedTurf.rate : 0;
+      let addons = 0;
+      if (document.getElementById('addon-ball')?.checked) addons += 100;
+      if (document.getElementById('addon-bibs')?.checked) addons += 150;
+      if (document.getElementById('addon-ref')?.checked) addons += 400;
+      if (document.getElementById('addon-drinks')?.checked) addons += 80;
+
+      let grandTotal = Math.max(0, base + addons - (selectedSlot ? discountAmount : 0));
+
+      if (selectedSlot) {
+        document.getElementById('summarySlotText').innerText = `${selectedDate} • ${selectedSlot}`;
+        document.getElementById('summaryTotalText').innerText = '₹' + grandTotal;
+        document.getElementById('proceedPayBtn').style.opacity = '1';
+        document.getElementById('proceedPayBtn').style.pointerEvents = 'auto';
+      } else {
+        document.getElementById('summarySlotText').innerText = 'Please tap a slot above';
+        document.getElementById('summaryTotalText').innerText = '₹0';
+        document.getElementById('proceedPayBtn').style.opacity = '0.5';
+        document.getElementById('proceedPayBtn').style.pointerEvents = 'none';
+      }
+    }
+
+    // CHECKOUT MODAL
+    function openCheckoutModal() {
+      if (!selectedSlot) return;
+      document.getElementById('modalTurfName').innerText = `${selectedTurf.name} — ${selectedPitch}`;
+      document.getElementById('modalSlotTime').innerText = `📅 ${selectedDate} | ⏰ ${selectedSlot}`;
+
+      let base = selectedTurf.rate;
+      let addons = 0;
+      if (document.getElementById('addon-ball')?.checked) addons += 100;
+      if (document.getElementById('addon-bibs')?.checked) addons += 150;
+      if (document.getElementById('addon-ref')?.checked) addons += 400;
+      if (document.getElementById('addon-drinks')?.checked) addons += 80;
+
+      document.getElementById('billSlotFee').innerText = '₹' + base;
+      document.getElementById('billAddonsFee').innerText = '₹' + addons;
+      document.getElementById('billDiscount').innerText = '-₹' + discountAmount;
+      document.getElementById('billGrandTotal').innerText = '₹' + Math.max(0, base + addons - discountAmount);
+
+      document.getElementById('checkoutModal').classList.add('active');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.remove('active');
+    }
+
+    function applyCoupon() {
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      if (code === 'FIRST50') {
+        discountAmount = 150;
+        document.getElementById('couponMessage').innerText = "Coupon 'FIRST50' applied: ₹150 OFF!";
+        document.getElementById('couponMessage').style.color = '#34d399';
+      } else if (code === 'WEEKEND100') {
+        discountAmount = 100;
+        document.getElementById('couponMessage').innerText = "Coupon 'WEEKEND100' applied: ₹100 OFF!";
+        document.getElementById('couponMessage').style.color = '#34d399';
+      } else {
+        discountAmount = 0;
+        document.getElementById('couponMessage').innerText = "Invalid coupon code.";
+        document.getElementById('couponMessage').style.color = '#f87171';
+      }
+      openCheckoutModal();
+    }
+
+    function selectPayOption(el) {
+      document.querySelectorAll('.pay-option').forEach(o => {
+        o.classList.remove('selected');
+        o.querySelector('span:last-child').innerText = '○';
+        o.querySelector('span:last-child').style.color = 'var(--text-muted)';
+      });
+      el.classList.add('selected');
+      el.querySelector('span:last-child').innerText = '●';
+      el.querySelector('span:last-child').style.color = 'var(--accent-green)';
+    }
+
+    // CONFIRM PAYMENT & GENERATE TICKET PASS
+    function confirmPaymentAndGeneratePass() {
+      closeCheckoutModal();
+
+      const newCode = 'TB-' + Math.floor(10000 + Math.random() * 90000);
+      const newPass = {
+        code: newCode,
+        turfName: selectedTurf.name,
+        pitch: selectedPitch,
+        date: selectedDate,
+        time: selectedSlot,
+        amount: document.getElementById('billGrandTotal').innerText,
+        status: 'CONFIRMED'
+      };
+
+      // Save slot as booked
+      bookedSlots[selectedSlot] = true;
+      localStorage.setItem('turfbook_booked_slots', JSON.stringify(bookedSlots));
+
+      // Save pass
+      passes.unshift(newPass);
+      localStorage.setItem('turfbook_passes', JSON.stringify(passes));
+
+      // Success alert
+      alert(`🎉 BOOKING CONFIRMED!\nBooking ID: ${newCode}\nVenue: ${selectedTurf.name}\nSlot: ${selectedSlot}\nYour digital ticket pass has been generated!`);
+
+      // Switch to Passes Tab
+      renderPasses();
+      renderTimeSlots();
+      updateTotal();
+      switchTab('passes', document.querySelectorAll('.nav-item')[2]);
+    }
+
+    // RENDER PASSES
+    function renderPasses() {
+      document.getElementById('navPassBadge').innerText = passes.length;
+      document.getElementById('passCount').innerText = passes.length + ' Active Passes';
+
+      const container = document.getElementById('passesContainer');
+      if (passes.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding: 40px 20px; color:var(--text-muted);">
+            <div style="font-size:40px; margin-bottom:10px;">🎟️</div>
+            <div style="font-size:16px; font-weight:700; color:#fff;">No passes yet</div>
+            <div style="font-size:13px; margin-top:4px;">Book a turf slot to get your instant QR match pass!</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = passes.map(p => `
+        <div class="ticket-container">
+          <div class="ticket-badge">✓ ${p.status}</div>
+          <div class="ticket-title">${p.turfName}</div>
+          <div class="ticket-venue">🏟️ ${p.pitch}</div>
+
+          <div class="ticket-grid">
+            <div class="ticket-cell">
+              <label>Match Date</label>
+              <span>${p.date}</span>
+            </div>
+            <div class="ticket-cell">
+              <label>Match Time</label>
+              <span>${p.time}</span>
+            </div>
+            <div class="ticket-cell">
+              <label>Booking ID</label>
+              <span style="color:var(--accent-green);">${p.code}</span>
+            </div>
+            <div class="ticket-cell">
+              <label>Paid Total</label>
+              <span>${p.amount}</span>
+            </div>
+          </div>
+
+          <!-- SVG QR CODE -->
+          <div class="qr-box">
+            <svg viewBox="0 0 100 100" width="100%" height="100%">
+              <rect width="100" height="100" fill="#ffffff" />
+              <!-- Corners -->
+              <rect x="10" y="10" width="25" height="25" fill="#000" />
+              <rect x="15" y="15" width="15" height="15" fill="#fff" />
+              <rect x="18" y="18" width="9" height="9" fill="#000" />
+
+              <rect x="65" y="10" width="25" height="25" fill="#000" />
+              <rect x="70" y="15" width="15" height="15" fill="#fff" />
+              <rect x="73" y="18" width="9" height="9" fill="#000" />
+
+              <rect x="10" y="65" width="25" height="25" fill="#000" />
+              <rect x="15" y="70" width="15" height="15" fill="#fff" />
+              <rect x="18" y="73" width="9" height="9" fill="#000" />
+
+              <!-- Matrix Pattern -->
+              <rect x="42" y="12" width="6" height="6" fill="#000" />
+              <rect x="52" y="12" width="6" height="6" fill="#000" />
+              <rect x="42" y="24" width="6" height="6" fill="#000" />
+              <rect x="52" y="24" width="6" height="6" fill="#000" />
+              <rect x="12" y="42" width="6" height="6" fill="#000" />
+              <rect x="24" y="42" width="6" height="6" fill="#000" />
+              <rect x="42" y="42" width="16" height="16" fill="#10b981" />
+              <rect x="65" y="42" width="6" height="6" fill="#000" />
+              <rect x="78" y="42" width="6" height="6" fill="#000" />
+              <rect x="42" y="65" width="6" height="6" fill="#000" />
+              <rect x="52" y="78" width="6" height="6" fill="#000" />
+              <rect x="68" y="68" width="8" height="8" fill="#000" />
+              <rect x="80" y="80" width="6" height="6" fill="#000" />
+            </svg>
+          </div>
+          <div class="ticket-code">${p.code}</div>
+
+          <div class="ticket-actions">
+            <button class="ticket-btn ticket-btn-primary" onclick="alert('Navigating to venue coordinates...')">📍 Get Directions</button>
+            <button class="ticket-btn ticket-btn-danger" onclick="cancelPass('${p.code}')">Cancel Slot</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function cancelPass(code) {
+      if (confirm(`Are you sure you want to cancel booking ${code}? 100% refund will be credited instantly.`)) {
+        passes = passes.filter(p => p.code !== code);
+        localStorage.setItem('turfbook_passes', JSON.stringify(passes));
+        renderPasses();
+        alert('Booking cancelled. ₹1,050 refunded to your account.');
+      }
+    }
+
+    // OWNER HUB
+    function renderOwnerHub() {
+      const slots = ['06:00 AM', '07:00 AM', '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '04:00 PM', '05:00 PM', '06:00 PM', '07:00 PM', '08:00 PM', '09:00 PM'];
+      document.getElementById('ownerSlotGrid').innerHTML = slots.map(s => {
+        const isBlocked = bookedSlots[s];
+        return `
+          <div class="slot-chip ${isBlocked ? 'booked' : 'available'}" onclick="toggleOwnerSlot('${s}')">
+            <div class="slot-time">${s}</div>
+            <div class="slot-rate">${isBlocked ? '🔒 Blocked' : '✓ Open'}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleOwnerSlot(slot) {
+      bookedSlots[slot] = !bookedSlots[slot];
+      localStorage.setItem('turfbook_booked_slots', JSON.stringify(bookedSlots));
+      renderOwnerHub();
+      renderTimeSlots();
+    }
+
+    function verifyTicketCode() {
+      const code = document.getElementById('verifyCodeInput').value.trim().toUpperCase();
+      const match = passes.find(p => p.code === code);
+      const res = document.getElementById('verifyResult');
+      if (match) {
+        res.innerHTML = `<span style="color:#34d399;">✓ VALID PASS: ${match.turfName} (${match.pitch}) for ${match.time}</span>`;
+      } else {
+        res.innerHTML = `<span style="color:#f87171;">✕ INVALID PASS: Code '${code}' not found in active bookings.</span>`;
+      }
+    }
+
+    // ROLE & TAB SWITCHERS
+    function setRole(role) {
+      currentRole = role;
+      localStorage.setItem('turfbook_role', role);
+      document.getElementById('userRolePill').innerText = role === 'Owner' ? '💼 Turf Owner' : '👤 Player';
+      document.getElementById('profileRole').innerText = role === 'Owner' ? 'Turf Owner (Green Field Arena)' : 'Player Account (Verified)';
+      document.getElementById('roleBtnPlayer').classList.toggle('active', role === 'Player');
+      document.getElementById('roleBtnOwner').classList.toggle('active', role === 'Owner');
+    }
+
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-screen').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      if (btn) btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openAuthModal() {
+      switchTab('profile', document.querySelectorAll('.nav-item')[4]);
     }
   </script>
 </body>
